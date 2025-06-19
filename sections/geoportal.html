@@ -1,0 +1,144 @@
+<section id="geoportal" class="content-section active">
+    <div class="section-header">
+        <h2><i class="fas fa-map"></i> Geoportal</h2>
+        <div class="controls">
+            <div class="input-group search-box">
+                <input type="text" class="form-control" placeholder="Buscar ubicación...">
+                <button class="btn btn-success">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-success">
+                    <i class="fas fa-layer-group"></i> Capa base
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="map-container">
+        <div id="map"></div>
+        <div class="layers-panel">
+            <div class="layers-header">
+                <h3 class="layers-title">
+                    <i class="fas fa-layer-group"></i> Capas
+                </h3>
+                <div class="layers-controls">
+                    <button class="layers-control-btn" id="minimizePanel">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button class="layers-control-btn" id="closePanel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="layers-content">
+                <div class="layer-item">
+                    <input type="checkbox" id="baseLayer" checked>
+                    <label for="baseLayer">Capa Base (CartoDB Voyager)</label>
+                </div>
+                <div class="layer-item">
+                    <input type="checkbox" id="markersLayer" checked>
+                    <label for="markersLayer">Marcadores</label>
+                </div>
+            </div>
+        </div>
+        <div id="panels-container">
+            <div class="tools-panel">
+                <div class="tools-header">
+                    <h3 class="tools-title">
+                        <i class="fas fa-tools"></i> Herramientas
+                    </h3>
+                    <div class="tools-controls">
+                        <button class="tools-control-btn" id="minimizeToolsPanel">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="tools-control-btn" id="closeToolsPanel">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="tools-content">
+                    <!-- Herramientas de Dibujo -->
+                    <div class="tool-group">
+                        <h4><i class="fas fa-draw-polygon"></i> Dibujo</h4>
+                        <div class="btn-group-vertical w-100">
+                            <button class="btn btn-sm btn-outline-success" id="drawMarker">
+                                <i class="fas fa-map-marker-alt"></i> Añadir Marcador
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="drawPolygon">
+                                <i class="fas fa-draw-polygon"></i> Dibujar Polígono
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="drawPolyline">
+                                <i class="fas fa-slash"></i> Dibujar Línea
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="drawRectangle">
+                                <i class="fas fa-square"></i> Dibujar Rectángulo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Herramientas de Edición -->
+                    <div class="tool-group">
+                        <h4><i class="fas fa-edit"></i> Edición</h4>
+                        <div class="btn-group-vertical w-100">
+                            <button class="btn btn-sm btn-outline-success" id="editFeatures">
+                                <i class="fas fa-edit"></i> Editar Elementos
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="deleteFeatures">
+                                <i class="fas fa-trash"></i> Eliminar Elementos
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Herramientas de Medición -->
+                    <div class="tool-group">
+                        <h4><i class="fas fa-ruler"></i> Medición</h4>
+                        <div class="btn-group-vertical w-100">
+                            <button class="btn btn-sm btn-outline-success" id="measureDistance">
+                                <i class="fas fa-ruler-horizontal"></i> Medir Distancia
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="measureArea">
+                                <i class="fas fa-vector-square"></i> Medir Área
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exportación -->
+                    <div class="tool-group">
+                        <h4><i class="fas fa-file-export"></i> Exportar</h4>
+                        <div class="btn-group-vertical w-100">
+                            <button class="btn btn-sm btn-success" id="exportGeoJSON">
+                                <i class="fas fa-file-export"></i> Exportar GeoJSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-info">
+        <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+                <span>Coordenadas</span>
+                <p>Lat: <span id="latitude">19.4326</span> | Lon: <span id="longitude">-99.1332</span></p>
+            </div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-search-minus"></i>
+            <div>
+                <span>Zoom</span>
+                <p>Nivel: <span id="zoom-level">12</span></p>
+            </div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-compass"></i>
+            <div>
+                <span>Orientación</span>
+                <p>Norte</p>
+            </div>
+        </div>
+    </div>
+</section>

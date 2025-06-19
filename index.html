@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geoportal | CONANP </title>
+
+    <!-- Bootstrap CSS (local) -->
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+
+    <!-- Leaflet CSS (local) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+
+    <!-- Herramientas de leaflet -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-measure@3.1.0/dist/leaflet-measure.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-measure@3.1.0/dist/leaflet-measure.min.js"></script>
+
+</head>
+<body>
+<div id="app-container">
+    <!-- Navbar vertical -->
+    <nav id="navbar">
+        <button class="toggle-nav">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="brand">
+            <div class="logo-container">
+                <img src="assets/logo.svg" alt="Geoportal Logo" class="logo">
+            </div>
+            <h1><i class="fas fa-globe-americas"></i> GeoExplorer</h1>
+            <p>Sistema de Información Geográfica</p>
+        </div>
+
+        <div class="nav-items">
+            <div class="nav-item active" data-target="geoportal">
+                <a class="nav-link" data-title="Geoportal">
+                    <i class="fas fa-map"></i>
+                    <span>Geoportal</span>
+                </a>
+            </div>
+
+            <div class="nav-item" data-target="analisis">
+                <a class="nav-link" data-title="Análisis">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Análisis</span>
+                </a>
+            </div>
+
+            <div class="nav-item" data-target="graficas">
+                <a class="nav-link" data-title="Gráficas">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Gráficas</span>
+                </a>
+            </div>
+
+            <div class="nav-item" data-target="descargas">
+                <a class="nav-link" data-title="Descargas">
+                    <i class="fas fa-download"></i>
+                    <span>Descargas</span>
+                </a>
+            </div>
+
+            <div class="nav-item" data-target="datos">
+                <a class="nav-link" data-title="Datos">
+                    <i class="fas fa-database"></i>
+                    <span>Datos</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Usuario&background=27ae60&color=fff" alt="Usuario" class="user-avatar">
+                <span>SIG CONANP</span>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <!-- Contenido Principal -->
+    <main id="main-content">
+        <!-- Sección Geoportal -->
+        <section id="geoportal" class="content-section active">
+            <div class="section-header">
+                <h2><i class="fas fa-map"></i> Geoportal</h2>
+                <div class="controls">
+                    <div class="input-group search-box">
+                        <input type="text" class="form-control" placeholder="Buscar ubicación...">
+                        <button class="btn btn-success">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-success">
+                            <i class="fas fa-layer-group"></i> Capa base
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="map-container">
+                <div id="map"></div>
+                <!--  panel de capas  -->
+                <div class="layers-panel">
+                    <div class="layers-header">
+                        <h3 class="layers-title">
+                            <i class="fas fa-layer-group"></i> Capas
+                        </h3>
+                        <div class="layers-controls">
+                            <button class="layers-control-btn" id="minimizePanel">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button class="layers-control-btn" id="closePanel">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="layers-content">
+                        <div class="layer-item">
+                            <input type="checkbox" id="baseLayer" checked>
+                            <label for="baseLayer">Capa Base (CartoDB Voyager)</label>
+                        </div>
+                        <div class="layer-item">
+                            <input type="checkbox" id="markersLayer" checked>
+                            <label for="markersLayer">Marcadores</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- panel de herramientas -->
+                <div class="tools-panel">
+                    <div class="tools-header">
+                        <h3 class="tools-title">
+                            <i class="fas fa-tools"></i> Herramientas
+                        </h3>
+                        <div class="tools-controls">
+                            <button class="tools-control-btn" id="minimizeToolsPanel">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button class="tools-control-btn" id="closeToolsPanel">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tools-content">
+                        <!-- Herramientas de Dibujo -->
+                        <div class="tool-group">
+                            <h4><i class="fas fa-draw-polygon"></i> Dibujo</h4>
+                            <div class="btn-group-vertical w-100">
+                                <button class="btn btn-sm btn-outline-success" id="drawMarker">
+                                    <i class="fas fa-map-marker-alt"></i> Añadir Marcador
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="drawPolygon">
+                                    <i class="fas fa-draw-polygon"></i> Dibujar Polígono
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="drawPolyline">
+                                    <i class="fas fa-slash"></i> Dibujar Línea
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="drawRectangle">
+                                    <i class="fas fa-square"></i> Dibujar Rectángulo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Herramientas de Edición -->
+                        <div class="tool-group">
+                            <h4><i class="fas fa-edit"></i> Edición</h4>
+                            <div class="btn-group-vertical w-100">
+                                <button class="btn btn-sm btn-outline-success" id="editFeatures">
+                                    <i class="fas fa-edit"></i> Editar Elementos
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="deleteFeatures">
+                                    <i class="fas fa-trash"></i> Eliminar Elementos
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Herramientas de Medición -->
+                        <div class="tool-group">
+                            <h4><i class="fas fa-ruler"></i> Medición</h4>
+                            <div class="btn-group-vertical w-100">
+                                <button class="btn btn-sm btn-outline-success" id="measureDistance">
+                                    <i class="fas fa-ruler-horizontal"></i> Medir Distancia
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="measureArea">
+                                    <i class="fas fa-vector-square"></i> Medir Área
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Exportación -->
+                        <div class="tool-group">
+                            <h4><i class="fas fa-file-export"></i> Exportar</h4>
+                            <div class="btn-group-vertical w-100">
+                                <button class="btn btn-sm btn-success" id="exportGeoJSON">
+                                    <i class="fas fa-file-export"></i> Exportar GeoJSON
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="map-info">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <span>Coordenadas</span>
+                        <p>Lat: <span id="latitude">19.4326</span> | Lon: <span id="longitude">-99.1332</span></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-search-minus"></i>
+                    <div>
+                        <span>Zoom</span>
+                        <p>Nivel: <span id="zoom-level">12</span></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-compass"></i>
+                    <div>
+                        <span>Orientación</span>
+                        <p>Norte</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Otras secciones (inicialmente ocultas) -->
+        <section id="analisis" class="content-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Análisis Espacial</h2>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-chart-line"></i>
+                <h3>Módulo de Análisis en Desarrollo</h3>
+                <p>Esta sección incluirá herramientas avanzadas para el análisis espacial y estadístico de datos geográficos.</p>
+                <div class="progress mt-4" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 45%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="graficas" class="content-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-pie"></i> Visualización de Datos</h2>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-chart-pie"></i>
+                <h3>Módulo de Gráficas en Desarrollo</h3>
+                <p>Esta sección mostrará visualizaciones de datos en diferentes formatos gráficos para mejor comprensión de la información geográfica.</p>
+                <div class="progress mt-4" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 30%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="descargas" class="content-section">
+            <div class="section-header">
+                <h2><i class="fas fa-download"></i> Descarga de Datos</h2>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-download"></i>
+                <h3>Módulo de Descargas en Desarrollo</h3>
+                <p>Esta sección permitirá descargar conjuntos de datos geográficos en diferentes formatos (Shapefile, GeoJSON, KML, etc.).</p>
+                <div class="progress mt-4" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 25%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="datos" class="content-section">
+            <div class="section-header">
+                <h2><i class="fas fa-database"></i> Gestión de Datos</h2>
+            </div>
+            <div class="placeholder-content">
+                <i class="fas fa-database"></i>
+                <h3>Módulo de Datos en Desarrollo</h3>
+                <p>Esta sección proporcionará acceso a metadatos y catálogos de información geográfica disponible en el sistema.</p>
+                <div class="progress mt-4" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 20%"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Bootstrap JS Bundle (local) -->
+<script src="scripts/bootstrap.bundle.min.js"></script>
+
+<!-- Leaflet JS (local) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Script personalizado -->
+<script src="scripts/main.js"></script>
+</body>
+</html>
